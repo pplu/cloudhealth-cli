@@ -1,0 +1,34 @@
+#!/usr/bin/perl
+
+use v5.10;
+use JSON::MaybeXS;
+use ARGV::Struct;
+use CloudHealth::API;
+
+sub usage {
+  say "Usage: $0 method param1 param1value param2 param2value";
+  exit 1;
+}
+
+my $ch = CloudHealth::API->new;
+
+my $method = shift @ARGV;
+usage if (not defined $method or $method eq '');
+die "Unknown method $method" if (not $ch->can($method));
+
+my @params = @ARGV;
+my $arg_parser = ARGV::Struct->new(argv => [ '{', @params, '}' ]);
+my $struct = $arg_parser->parse;
+
+my $result = eval {
+  $ch->$method(%$struct);
+};
+if ($@) {
+  say $@;
+  exit 1;
+}
+if (ref($result)) {
+  my $json = JSON::MaybeXS->new->pretty;
+  say $json->encode($result);
+}
+exit 0;
