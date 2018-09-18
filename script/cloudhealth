@@ -59,7 +59,7 @@ sub usage {
   if ($self->method_specified and $self->method_exists) {
     say sprintf '%s accepts the following parameters:', $self->run_method;
     say "  $_" foreach (map { $_->{ name } } @{ $self->ch->call_former->callinfo_class($self->run_method)->_url_params });
-    say "  $_" foreach (map { $_->{ name } } @{ $self->ch->call_former->callinfo_class($self->run_method)->_parameters });
+    say "  $_" foreach (map { $_->{ name } } @{ $self->ch->call_former->callinfo_class($self->run_method)->_query_params });
     say "  $_" foreach (map { $_->{ name } } @{ $self->ch->call_former->callinfo_class($self->run_method)->_body_params });
   }
   say "Usage: $0 method param1 param1value param2 param2value";
