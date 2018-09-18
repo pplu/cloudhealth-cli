@@ -1,0 +1,3 @@
+[submodule "cloudhealth-api-perl"]
+	path = cloudhealth-api-perl
+	url = git@github.com:pplu/cloudhealth-api-perl.git
