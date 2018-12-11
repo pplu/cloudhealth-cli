@@ -19,7 +19,8 @@ RUN apt-get update ; \
     apt-get install -y openssl ; \
     apt-get clean
 
-COPY . /root/
-ENV PERL5LIB /root/local/lib/perl5:/root/cloudhealth-api-perl/lib/
+RUN cpanm -n -l local CloudHealth::CLI
 
-ENTRYPOINT [ "/root/script/cloudhealth" ]
+ENV PERL5LIB /root/local/lib/perl5
+
+ENTRYPOINT [ "/root/local/bin/cloudhealth" ]
