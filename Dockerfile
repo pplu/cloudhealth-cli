@@ -7,12 +7,9 @@ RUN apt-get update ; \
     apt-get clean
 
 COPY cpanfile /root/cpanfile
-RUN cpanm -l local -n --installdeps . ; rm -rf /root/.cpanm
+RUN cpanm -l local --no-man-pages -n --installdeps . ; rm -rf /root/.cpanm
 
-COPY cloudhealth-api-perl/cpanfile /root/cpanfile
-RUN cpanm -l local -n --installdeps . ; rm -rf /root/.cpanm
-
-RUN rm -rf /root/local/man /root/local/lib/perl5/x86_64-linux-gnu/.meta/
+RUN rm -rf /root/local/lib/perl5/x86_64-linux-gnu/.meta/
 
 # Container for the command-line util
 FROM perl:5.28-slim
