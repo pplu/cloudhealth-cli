@@ -37,7 +37,7 @@ has method_exists => (is => 'ro', isa => Bool, lazy => 1, default => sub {
 
 has wants_help => (is => 'ro', isa => Bool, lazy => 1, default => sub {
   my $self = shift;
-  return grep { $_ eq '--help' or $_ eq '-h' } @{ $self->argv };
+  return grep { lc($_) eq '--help' or lc($_) eq 'help' } @{ $self->argv };
 });
 
 sub usage {
@@ -46,7 +46,7 @@ sub usage {
   say " * Didn't detect credentials. Set env CLOUDHEALTH_APIKEY" if (not $self->credentials_detected);
   say " * Didn't specify the method to call" if (not $self->method_specified);
   say sprintf(" * Don't know method %s", $self->run_method) if ($self->method_specified and not $self->method_exists);
-  if (not $self->method_specified or not $self->method_exists) {
+  if (not $self->method_specified or not $self->method_exists or $self->wants_help) {
     say 'The following methods are available:';
     foreach my $kind (sort keys %{ $self->ch->method_classification }) {
       say $kind;
